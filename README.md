@@ -29,4 +29,4 @@ Through this project, I learned how to work with JSON data, create interactive v
 
 ### Resources
 
-UCB Starter Files, [Belly Button Biodiversity](https://robdunnlab.com/projects/belly-button-biodiversity/), Troubleshooting with ChatGPT and GitHub CoPilot inside Visual Studio Code. 
+UCB Starter Files, [Belly Button Biodiversity](https://robdunnlab.com/projects/belly-button-biodiversity/), and troubleshooting with ChatGPT and GitHub CoPilot inside Visual Studio Code. 
