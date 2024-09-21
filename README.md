@@ -9,7 +9,7 @@ The dataset reveals that a small handful of microbial species (also called opera
 
 ### Dashboard
 
-This project visualizes the microbial diversity found in human belly buttons using data from the [Belly Button Biodiversity](https://robdunnlab.com/projects/belly-button-biodiversity/) project. The dashboard allows users to explore data on bacteria cultures present in different individuals, presenting the top 10 most prevalent bacterial cultures as well as detailed demographic information.
+This project visualizes the microbial diversity found in human belly buttons using data from the [Belly Button Biodiversity](https://robdunnlab.com/projects/belly-button-biodiversity/) project. The dashboard allows users to explore data on bacteria cultures present in different individuals, presenting the top 10 most prevalent bacterial cultures and detailed demographic information.
 
 Users can interact with the dashboard by selecting a sample ID from the dropdown menu to view bar charts, bubble charts, and individual metadata.
 
@@ -18,7 +18,7 @@ Users can interact with the dashboard by selecting a sample ID from the dropdown
 ### Features
 
 - **Interactive Bar Chart**: Displays the top 10 Operational Taxonomic Units (OTUs) for each individual sample, showing the most prevalent bacteria in a clear, visual way.
-- **Bubble Chart**: Visualizes the full bacterial composition for the selected individual, using bubble size to represent the quantity of each OTU and color to differentiate between OTUs.
+- **Bubble Chart**: Visualizes the full bacterial composition for the selected individual, using bubble size to represent the quantity of each OTU & color to differentiate between OTUs.
 - **Demographic Panel**: Provides detailed demographic information, such as age, gender, and ethnicity for each individual sample.
 
 ### Conclusion
