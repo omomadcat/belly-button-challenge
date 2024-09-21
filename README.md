@@ -26,3 +26,7 @@ Users can interact with the dashboard by selecting a sample ID from the dropdown
 The Belly Button Biodiversity Dashboard provides a dynamic way to explore microbial ecosystems in humans. By visualizing bacterial cultures and demographic data, the dashboard offers insights into the diversity of bacteria in different individuals. This project demonstrates how interactive visualizations can help make complex biological data more accessible and engaging.
 
 Through this project, I learned how to work with JSON data, create interactive visualizations using Plotly, and deploy a dashboard using GitHub Pages.
+
+### Resources
+
+UCB Starter Files, [Belly Button Biodiversity](https://robdunnlab.com/projects/belly-button-biodiversity/), Troubleshooting with ChatGPT and GitHub CoPilot inside Visual Studio Code. 
