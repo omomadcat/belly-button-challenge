@@ -1,142 +1,104 @@
 // Build the metadata panel
 function buildMetadata(sample) {
+  // Fetch the JSON data
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+    // Get the metadata for the selected sample
+    const metadata = data.metadata;
+    const result = metadata.find(item => item.id == sample);
 
-    // get the metadata field
-    var metadata = data.metadata;
+    // Select the panel with id `#sample-metadata` and clear any existing content
+    const panel = d3.select("#sample-metadata").html("");
 
-    // Filter the metadata for the object with the desired sample number
-    var resultArray = metadata.filter(item => item.id == sample);
-    var result = resultArray[0];
-
-    // Use d3 to select the panel with id of `#sample-metadata`
-    var panel = d3.select("#sample-metadata");
-
-    // Use `.html("") to clear any existing metadata
-    panel.html("");
-
-    // Inside a loop, you will need to use d3 to append new
-    // tags for each key-value in the filtered metadata.
+    // Append new tags for each key-value pair in the metadata
     Object.entries(result).forEach(([key, value]) => {
-      panel.append("p").text(`${key}: ${value}`);
-    })
+      panel.append("p").text(`${key.toUpperCase()}: ${value}`);
+    });
   });
-};
+}
 
-// function to build both charts
+// Function to build both charts
 function buildCharts(sample) {
+  // Fetch the JSON data
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+    // Get the sample data for the selected sample
+    const samples = data.samples;
+    const selectedSample = samples.find(sampleData => sampleData.id == sample);
 
-    // Get the samples field
-    let samples = data.samples;
+    // Get the OTU data
+    const otuIds = selectedSample.otu_ids;
+    const otuLabels = selectedSample.otu_labels;
+    const sampleValues = selectedSample.sample_values;
 
-    // Filter the samples for the object with the desired sample number
-    let selectedSample = samples.find(sampleData => sampleData.id == sample);
+    // Create the bar chart (Top 10 OTUs)
+    const top10OTUs = otuIds.slice(0, 10).reverse();
+    const top10Values = sampleValues.slice(0, 10).reverse();
+    const top10Labels = otuLabels.slice(0, 10).reverse();
 
-    // Get the otu_ids, otu_labels, and sample_values
-    let otuIds = selectedSample.otu_ids;
-    let otuLabels = selectedSample.otu_labels;
-    let sampleValues = selectedSample.sample_values;
+    const traceBar = {
+      x: top10Values,
+      y: top10OTUs.map(id => `OTU ${id}`),
+      text: top10Labels,
+      type: "bar",
+      orientation: "h"
+    };
 
-    // Create a dropdown menu
-    const dropdown = d3.select("#dropdown")
-      .append("select")
-      .selectAll("option")
-      .data(samples.map(s => s.id))
-      .enter()
-      .append("option")
-      .text(d => d)
-      .attr("value", d => d);
+    const layoutBar = {
+      title: "Top 10 Bacteria Cultures Found",
+      xaxis: { title: "Number of Bacteria" },
+      yaxis: { title: "OTU IDs" },
+      margin: { t: 30, l: 150 }
+    };
 
-    // Function to update the chart based on selected individual
-    function updateChart(selectedData) {
-        const top10OTUs = selectedData.otu_ids.slice(0, 10);
-        const top10Values = selectedData.sample_values.slice(0, 10);
-        const top10Labels = selectedData.otu_labels.slice(0, 10);
+    Plotly.newPlot("bar", [traceBar], layoutBar);
 
-        top10OTUs.reverse();
-        top10Values.reverse();
-        top10Labels.reverse();
-
-        // Create data for the horizontal bar chart
-        const traceBar = {
-          x: top10Values,
-          y: top10OTUs.map(id => `OTU ${id}`),
-          text: top10Labels,
-          type: "bar",
-          orientation: "h"
-        };
-
-        const layoutBar = {
-          title: "Top 10 Bacteria Cultures Found",
-          xaxis: {title: "Number of Bacteria"},
-          yaxis: {title: "OTU IDs"}
-        };
-        
-        //Plot the bar chart
-        Plotly.newPlot("bar", [traceBar], layoutBar);
-    }
-    // Initialize with the first individual's data
-    updateChart(selectedSample);
-
-    // Build a Bubble Chart
+    // Create the bubble chart
     const traceBubble = {
       x: otuIds,
       y: sampleValues,
       text: otuLabels,
-      mode: `markers`,
+      mode: 'markers',
       marker: {
         size: sampleValues,
         color: otuIds,
-        colorscale: `Earth`
+        colorscale: 'Earth'
       }
     };
 
     const layoutBubble = {
       title: 'Bacteria Cultures per Sample',
-      xaxis: {title: 'OTU ID'},
-      yaxis: {title: 'Number of Bacteria'},
-      autosize: true
+      xaxis: { title: 'OTU ID' },
+      yaxis: { title: 'Number of Bacteria' },
+      margin: { t: 30 }
     };
 
-    // Render the Bubble Chart
-    Plotly.newPlot(`bubble`, [traceBubble], layoutBubble);
-
+    Plotly.newPlot("bubble", [traceBubble], layoutBubble);
   });
-};
+}
 
-// Function to run on page load
+// Function to initialize the dashboard
 function init() {
+  // Fetch the JSON data
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+    const names = data.names;
 
-    // Get the names field
-    var names = data.names;
-
-    // Use d3 to select the dropdown with id of `#selDataset`
-    var dropdown = d3.select(`#selDataset`);
-
-    // Use the list of sample names to populate the select options
-    // Hint: Inside a loop, you will need to use d3 to append a new
-    // option for each sample name.
-    names.forEach((name) => {
+    // Populate the dropdown menu
+    const dropdown = d3.select("#selDataset");
+    names.forEach(name => {
       dropdown.append("option").text(name).property("value", name);
     });
 
-    // Get the first sample from the list
-    var firstSample = names[0];
-
-    // Build charts and metadata panel with the first sample
+    // Build initial plots and metadata panel using the first sample
+    const firstSample = names[0];
     buildCharts(firstSample);
     buildMetadata(firstSample);
   });
-};
+}
 
-// Function for event listener
+// Function for updating charts and metadata when a new sample is selected
 function optionChanged(newSample) {
-  // Build charts and metadata panel each time a new sample is selected
   buildCharts(newSample);
   buildMetadata(newSample);
-};
+}
 
 // Initialize the dashboard
 init();
